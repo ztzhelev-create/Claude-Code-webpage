@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import type { Recipe } from "@/lib/types";
 import { searchRecipes } from "@/lib/search";
 import { RecipeCard } from "./RecipeCard";
+import { SearchField } from "./SearchField";
 
 export function RecipeBrowser({
   recipes,
@@ -55,16 +56,16 @@ export function RecipeBrowser({
   return (
     <>
       <div className="mt-8 flex flex-col gap-5">
-        <input
-          type="search"
-          aria-label="Search recipes"
-          placeholder="Search by name, ingredient or category"
+        {/* Filtering is live, so the button is there for parity with the home
+            page and to give Enter something to submit. */}
+        <SearchField
+          testId="recipes-search"
           value={query}
-          onChange={(event) => {
-            setQuery(event.target.value);
-            updateUrl({ q: event.target.value });
+          onChange={(next) => {
+            setQuery(next);
+            updateUrl({ q: next });
           }}
-          className="w-full max-w-md rounded-sm border border-stone bg-transparent px-4 py-3 font-body text-ink placeholder:text-muted"
+          placeholder="Search by name, ingredient or category"
         />
 
         <div className="flex flex-wrap gap-2">

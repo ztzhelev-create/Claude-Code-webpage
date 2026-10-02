@@ -1,4 +1,7 @@
 import { test, expect } from "@playwright/test";
+import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import {
   assertLocalAssetExists,
   getAllLifestyle,
@@ -149,6 +152,26 @@ test.describe("referenced images", () => {
     expect(() =>
       assertLocalAssetExists("/images/not-on-disk.jpeg", "recipes", "ghost"),
     ).toThrow(/not-on-disk\.jpeg/);
+  });
+
+  /* The placeholder "Photograph to come" card is byte-identical wherever it is
+     still in use, so a shared hash is how a recipe without real photography
+     gives itself away. */
+  test("the miso-glazed aubergine has its own photograph, not the shared placeholder", () => {
+    const hashOf = (image: string) =>
+      createHash("sha256")
+        .update(readFileSync(join(process.cwd(), "public", image)))
+        .digest("hex");
+
+    const recipes = getAllRecipes();
+    const target = recipes.find((r) => r.slug === "miso-glazed-aubergine")!;
+    const mine = hashOf(target.image);
+
+    const others = recipes
+      .filter((r) => r.slug !== target.slug)
+      .map((r) => hashOf(r.image));
+
+    expect(others).not.toContain(mine);
   });
 
   test("every seeded recipe and post points at a file that exists", () => {

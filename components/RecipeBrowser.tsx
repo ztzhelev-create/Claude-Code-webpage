@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import type { Recipe } from "@/lib/types";
+import { searchRecipes } from "@/lib/search";
 import { RecipeCard } from "./RecipeCard";
 
 export function RecipeBrowser({
@@ -39,16 +40,12 @@ export function RecipeBrowser({
     router.replace(qs ? `/recipes?${qs}` : "/recipes", { scroll: false });
   }
 
-  const needle = query.trim().toLowerCase();
-  const matches = recipes.filter((recipe) => {
-    const inCategory = !category || recipe.category === category;
-    const inText =
-      !needle ||
-      recipe.title.toLowerCase().includes(needle) ||
-      recipe.description.toLowerCase().includes(needle) ||
-      recipe.category.toLowerCase().includes(needle);
-    return inCategory && inText;
-  });
+  /* Category narrows first, then the text query runs over name, description,
+     category and the ingredient list — the same matcher the hero bar feeds. */
+  const inCategory = category
+    ? recipes.filter((recipe) => recipe.category === category)
+    : recipes;
+  const matches = searchRecipes(inCategory, query);
 
   function clearAll() {
     setQuery("");
@@ -61,7 +58,7 @@ export function RecipeBrowser({
         <input
           type="search"
           aria-label="Search recipes"
-          placeholder="Search recipes"
+          placeholder="Search by name, ingredient or category"
           value={query}
           onChange={(event) => {
             setQuery(event.target.value);

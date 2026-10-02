@@ -5,6 +5,7 @@ import { headingId } from "@/lib/sections";
 import { RecipeCard } from "@/components/RecipeCard";
 import { PostCard } from "@/components/PostCard";
 import { TimeBadge } from "@/components/TimeBadge";
+import { HeroSearch } from "@/components/HeroSearch";
 
 const RECENT = 3;
 
@@ -22,6 +23,13 @@ export default function Home() {
         <h1 className="max-w-[18ch] text-4xl font-semibold md:text-6xl">
           Recipes worth repeating
         </h1>
+
+        <p className="mt-5 max-w-[48ch] text-lg text-muted">
+          Search the whole collection by name, by category, or by what you
+          already have in the cupboard.
+        </p>
+
+        <HeroSearch />
 
         <Link
           href={`/recipes/${featured.slug}`}

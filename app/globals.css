@@ -1,0 +1,45 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-paper: #fcfcfa;
+  --color-ink: #17352b;
+  --color-muted: #5c6b62;
+  --color-stone: #e3e2db;
+  --color-citrus: #e8b130;
+
+  --font-display: var(--font-bricolage);
+  --font-body: var(--font-newsreader);
+}
+
+@layer base {
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-body);
+    /* Serif body copy wants more leading than a sans would. */
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1,
+  h2,
+  h3 {
+    font-family: var(--font-display);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-citrus);
+    outline-offset: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+  }
+}

@@ -1,0 +1,31 @@
+node_modules/
+.DS_Store
+
+# Playwright CLI runtime artifacts (snapshots, screenshots, traces, session state)
+.playwright/
+.playwright-cli/
+
+# Playwright test artifacts
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/
+
+# next.js
+/.next/
+/out/
+/build
+
+# misc
+*.pem
+npm-debug.log*
+
+# env files
+.env*
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
